@@ -5,32 +5,27 @@
 
 function solution(numbers) {
     const nums = numbers.split('');
-    const primes = getAllPrimes(nums);
+    const visited = Array(nums.length).fill(false);
+    const primes = new Set();
 
-    return primes.size;
-}
-
-function getAllPrimes(set) {
-    const result = new Set();
-
-    function permute(arr, current = []) {
-        if (arr.length === 0) {
-            return;
+    function permute(current) {
+        const num = Number(current.join(''));
+        if (isPrime(num)) {
+            primes.add(num);
         }
 
-        for (let i = 0; i < arr.length; i++) {
-            const remaining = [...arr.slice(0, i), ...arr.slice(i + 1)];
-            const newNum = Number([...current, arr[i]].join(''));
-            if (isPrime(newNum)) {
-                result.add(newNum);
+        for (let i = 0; i < nums.length; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                permute([...current, nums[i]]);
+                visited[i] = false;
             }
-            permute(remaining, [...current, arr[i]]);
         }
     }
 
-    permute(set);
+    permute([]);
 
-    return result;
+    return primes.size;
 }
 
 function isPrime(number) {
@@ -38,15 +33,7 @@ function isPrime(number) {
         return false;
     }
 
-    if (number === 2) {
-        return true;
-    }
-
-    if (number % 2 === 0) {
-        return false;
-    }
-
-    for (let i = 3; i <= Math.sqrt(number); i += 2) {
+    for (let i = 2; i <= Math.sqrt(number); i++) {
         if (number % i === 0) {
             return false;
         }
