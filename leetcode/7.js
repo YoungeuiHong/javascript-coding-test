@@ -15,3 +15,24 @@ var reverse = function (x) {
 
     return x > 0 ? reversed_num : -reversed_num;
 };
+
+
+/**
+ * @param {number} x
+ * @return {number}
+ */
+var reverse = function (x) {
+    const isMinus = x < 0;
+    let reversed = 0, absolute = Math.abs(x);
+
+    while (absolute > 0) {
+        reversed = reversed * 10 + absolute % 10;
+        absolute = Math.floor(absolute / 10);
+
+        if (reversed < -1 * 2 ** 31 || reversed >= 2 ** 31) {
+            return 0;
+        }
+    }
+
+    return isMinus ? -1 * reversed : reversed;
+};
